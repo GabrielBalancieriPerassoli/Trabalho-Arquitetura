@@ -16,9 +16,6 @@ MQ = 0
 # VARIAVEIS AUXILIARES
 INIT_PC = 0  # armazena o endereco inicial das instrucoes
 
-# VARIAVEL PARA MANIPULAR DADOS
-cont = 0
-
 # CICLO DA INSTRUCAO
 def busca():
     global PC, MAR, MBR, MEMORIA
@@ -26,55 +23,56 @@ def busca():
     MBR = MEMORIA[MAR]
 
 def decodificacao():
-    global MBR, IR, MAR, PC, cont
+    global MBR, IR, MAR, PC
 
     enderecos_identificados = identificarEnderecos()
-    tamanho = len(enderecos_identificados)
 
-    if cont < tamanho:
-        instrucao = MEMORIA[PC]
+    instrucao = MEMORIA[PC]
 
+    if '(' in instrucao and ')' in instrucao:
         instrucao_completa = instrucao.split('(')[0]
         IR = instrucao_completa.strip()
-
-        if IR == "JUMP +M":
-            endereco = int(instrucao.split("+M(")[1].split(")")[0])
-            PC = endereco 
-        else:
-            endereco = int(instrucao.split("(")[1].split(")")[0])
-            MAR = endereco
+        
+        endereco = int(instrucao.split("(")[1].split(")")[0])
+        MAR = endereco
     else:
-        print("Índice de endereço fora do intervalo!")
+        IR = instrucao.strip()
+        MAR = "NONE" 
 
 def busca_dos_operandos():
     global MBR, MAR, MEMORIA
-    MBR = MEMORIA[MAR]
+
+    if isinstance(MAR, int):  # Verifica se MAR é um número inteiro
+        MBR = MEMORIA[MAR]
+    else:
+        print("Instrução sem endereço associado")
 
 def execucao():
-    global IR, MAR, PC, AC, cont, MEMORIA, MBR, MQ
+    global IR, MAR, PC, AC, MEMORIA, MBR, MQ
 
     print(f"IR: {IR}")
     print(f"AC: {AC}")
     print(f"MAR: {MAR}")
-    print(f"PC after JUMP: {PC}")
+    print(f"PC after JUMP: {PC}\n")
 
     if IR == "JUMP M":  # JUMP M(X)
+        print(MAR)
         endereco = int(MAR)
-        PC = endereco
+        print(endereco)
+        PC = endereco - 1
     elif IR == "JUMP +M": # JUMP +M(X)
-        if AC >= 0:  # Verifica se o AC é positivo
-            endereco = int(MAR) 
-            PC = endereco
+        if int(AC) >= 0:  # Verifica se o AC é positivo
+            endereco = int(MAR)
+            PC = endereco - 1
     elif IR == "LOAD M": # LOAD M(X) 
         AC = MBR
     elif IR == "LOAD |M": # LOAD |M(X)|
         MBR = int(MBR)
         AC = abs(MBR)
     elif IR == "LOAD MQ": # LOAD MQ
-        MQ = int(MBR)
         AC = MQ
     elif IR == "LOAD MQ,M": # LOAD MQ, M(X)
-        MQ = int(MBR) 
+        MQ = int(MBR)
     elif IR == "LOAD -M": # LOAD -M(X)
         AC = -MBR
     elif IR == "LOAD -|M": # LOAD -|M(X)|
@@ -88,31 +86,29 @@ def execucao():
     elif IR == "MUL M": # MUL M(X)
         multiplicando = int(MEMORIA[MAR])
         multiplicador = MQ
+
+        # Multiplicação considerando 40 bits
         produto = multiplicando * multiplicador
-        # Bits mais significativos
-        AC = produto // (2**20)
-        # Bits menos significativos
-        MQ = produto % (2**20)
+        produto_binario = bin(produto)[2:].zfill(80)
+
+        AC = int(produto_binario[:40], 2)
+        MQ = int(produto_binario[40:], 2)
     elif IR == "DIV M": # DIV M(X)
         dividendo = int(AC)
         divisor = int(MEMORIA[MAR])
-        # Verifica a divisão por zero
-        if divisor != 0:
-            # Quociente
-            MQ = dividendo // divisor
-            # Resto
-            AC = dividendo % divisor
-        else:
-            print("Erro: Divisão por zero!")
+        # Quociente
+        MQ = dividendo // divisor
+        # Resto
+        AC = dividendo % divisor
     elif IR == "ADD |M": # ADD |M(X)|  
         AC = int(AC) + abs(int(MBR))
     elif IR == "SUB |M": # SUB |M(X)|
         valor_mbr = int(MBR)
         AC = int(AC) - abs(valor_mbr)
     elif IR == "LSH": # LSH
-        AC = AC * 2  
+        AC = int(AC) * 2  
     elif IR == "RSH": # RSH
-        AC = AC // 2
+        AC = int(AC) // 2
     elif IR == "STOR M": # STOR M(X) 
         MBR = AC
         MBR = int(MBR)
@@ -120,7 +116,7 @@ def execucao():
 
 # PROCESSADOR
 def processador():
-    global PC, cont
+    global PC
     while PC < len(MEMORIA):  # Executa enquanto houver instruções na memória
         print(f"PC: {PC}")
         busca()
@@ -128,7 +124,6 @@ def processador():
         busca_dos_operandos()
         execucao()
         PC += 1
-        cont += 1
 
 # FUNCOES AUXILIARES
 def carga_memoria(nome_arquivo):
@@ -166,15 +161,15 @@ def identificarEnderecos():
             for parte in partes[1:]:
                 parte_limpa = parte.replace(" ", "")  # Remover espaços em branco
                 # Se a parte contiver informações sobre um endereço, vamos identificá-lo
-                if any(separador in parte_limpa for separador in ('M(', '|M(', '-M(', 'MQ')):
+                if any(separador in parte_limpa for separador in ('M(', '|M(', '-M(', 'MQ,M(')):
                     endereco = parte_limpa.split('(')[-1].split(')')[0].split(',')[0].split(':')[0]
                     enderecos_identificados.append(endereco)
                 elif '+M' in parte_limpa:  # Verifica a instrução JUMP +M(X)
                     endereco = parte_limpa.split('+M(')[-1].split(')')[0]
                     enderecos_identificados.append(endereco)
-                elif parte_limpa == "MQ":  # Verifica a instrução LOAD MQ
-                    enderecos_identificados.append("MQ")
-
+                elif 'MQ' in parte_limpa:
+                    endereco = 'nulo'    
+                    
     return enderecos_identificados
 
 # INICIO
