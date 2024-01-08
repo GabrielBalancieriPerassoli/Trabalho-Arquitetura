@@ -14,7 +14,7 @@ AC = 0
 MQ = 0
 
 # VARIAVEIS AUXILIARES
-INIT_PC = 0  # armazena o endereco inicial das instrucoes
+INIT_PC = 0  # Armazena o endereco inicial das instrucoes
 
 # CICLO DA INSTRUCAO
 def busca():
@@ -24,8 +24,6 @@ def busca():
 
 def decodificacao():
     global MBR, IR, MAR, PC
-
-    enderecos_identificados = identificarEnderecos()
 
     instrucao = MEMORIA[PC]
 
@@ -53,12 +51,10 @@ def execucao():
     print(f"IR: {IR}")
     print(f"AC: {AC}")
     print(f"MAR: {MAR}")
-    print(f"PC after JUMP: {PC}\n")
+    print(f"PC depois do JUMP: {PC}\n")
 
     if IR == "JUMP M":  # JUMP M(X)
-        print(MAR)
         endereco = int(MAR)
-        print(endereco)
         PC = endereco - 1
     elif IR == "JUMP +M": # JUMP +M(X)
         if int(AC) >= 0:  # Verifica se o AC é positivo
@@ -150,27 +146,6 @@ def print_instrucoes(instrucoes):
     print("\n***** INSTRUCOES *****\n")
     for instrucao in instrucoes:
         print(instrucao)
-   
-def identificarEnderecos():
-    global MEMORIA
-    enderecos_identificados = []
-
-    for instrucao in MEMORIA:
-        if isinstance(instrucao, str):  # Verifica se é uma string
-            partes = instrucao.split()
-            for parte in partes[1:]:
-                parte_limpa = parte.replace(" ", "")  # Remover espaços em branco
-                # Se a parte contiver informações sobre um endereço, vamos identificá-lo
-                if any(separador in parte_limpa for separador in ('M(', '|M(', '-M(', 'MQ,M(')):
-                    endereco = parte_limpa.split('(')[-1].split(')')[0].split(',')[0].split(':')[0]
-                    enderecos_identificados.append(endereco)
-                elif '+M' in parte_limpa:  # Verifica a instrução JUMP +M(X)
-                    endereco = parte_limpa.split('+M(')[-1].split(')')[0]
-                    enderecos_identificados.append(endereco)
-                elif 'MQ' in parte_limpa:
-                    endereco = 'nulo'    
-                    
-    return enderecos_identificados
 
 # INICIO
 nome_arquivo = sys.argv[1]
@@ -179,11 +154,7 @@ linha_inicio = int(sys.argv[2])
 MEMORIA = carga_memoria(nome_arquivo)
 inicia_PC(linha_inicio)
 
-print("\n", MEMORIA, "\n")
-
 processador()
-
-print("\n", MEMORIA, "\n")
 
 print_memoria_dados(linha_inicio)
 print_instrucoes(MEMORIA[linha_inicio:])
