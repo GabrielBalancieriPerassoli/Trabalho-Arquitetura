@@ -1,5 +1,7 @@
 ********* README *********
 
+# TRADUTOR IAS
+
 Fizemos o trabalho, e acreditamos que está funcionando corretamente, testamos várias vezes, tentamos fazer o mais realista possível com o computador IAS e com o conhecimento que tinhamos, tendo em vista que tivemos apenas algoritmos (lógica de programação), mas sabemos que fazer ficar 100% ainda não conseguimos desenvolver.
 
 Devido ao nosso atual nível de aprendizado, reconhecemos algumas limitações como o código ainda pode ser otimizado para melhor desempenho, além de limitações na implementação de algoritmos complexos devido à falta de experiência na resolução de problemas avançados.
