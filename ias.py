@@ -25,16 +25,14 @@ def busca():
 def decodificacao():
     global MBR, IR, MAR, PC
 
-    instrucao = MEMORIA[PC]
-
-    if '(' in instrucao and ')' in instrucao:
-        instrucao_completa = instrucao.split('(')[0]
-        IR = instrucao_completa.strip()
+    if '(' in MBR and ')' in MBR:
+        opcode = MBR.split('(')[0]
+        IR = opcode.strip()
         
-        endereco = int(instrucao.split("(")[1].split(")")[0])
+        endereco = int(MBR.split("(")[1].split(")")[0])
         MAR = endereco
     else:
-        IR = instrucao.strip()
+        IR = MBR.strip()
         MAR = "NONE" 
 
 def busca_dos_operandos():
