@@ -6,6 +6,7 @@ Agradecemos a compreensão.
 
 DO FUNCIONAMENTO
 Algumas recomendações:
+
 1. A memória vai de 0 a N. Quando for se referir a um endereço, leve em consideração que eles se referem à memória (que começa em 0), e não às linhas do arquivo de texto de entrada (que começa em 1). No exemplo abaixo, a instrução JUMP M(8) não saltará para a instrução STOR M(2) – que apesar de estar na 8.ª linha, é o endereço de memória 7 – e sim para o endereço de memória 8 (9.ª linha).
 0  20
 1  15
@@ -17,9 +18,8 @@ Algumas recomendações:
 7  STOR M(2)
 
 2. Não deixe espaços vazios na memória. Estes podem causar comportamentos imprevistos no funcionamento do programa. No exemplo baixo, os endereços 4 e 10 estão vazios, impossibilitando a leitura correta do arquivo de entrada.
-
 0  20
-1 15
+1  15
 2  0
 3  0
 4  
