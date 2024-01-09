@@ -1,101 +1,31 @@
-********* README *********
+O tradutor foi desenvolvido utilizando todos os recursos disponíveis ao nosso alcance.
 
-# TRADUTOR IAS
+Embora reconheçamos que nosso nível de aprendizado impõe certas limitações ao projeto, empenhamo-nos ao máximo em testar nosso programa exaustivamente, em busca de torná-lo plenamente funcional – mantendo, é claro, os elementos presentes na arquitetura do computador IAS. 
 
-Fizemos o trabalho, e acreditamos que está funcionando corretamente, testamos várias vezes, tentamos fazer o mais realista possível com o computador IAS e com o conhecimento que tinhamos, tendo em vista que tivemos apenas algoritmos (lógica de programação), mas sabemos que fazer ficar 100% ainda não conseguimos desenvolver.
+Agradecemos a compreensão.
 
-Devido ao nosso atual nível de aprendizado, reconhecemos algumas limitações como o código ainda pode ser otimizado para melhor desempenho, além de limitações na implementação de algoritmos complexos devido à falta de experiência na resolução de problemas avançados.
+DO FUNCIONAMENTO
+Algumas recomendações:
+1. A memória vai de 0 a N. Quando for se referir a um endereço, leve em consideração que eles se referem à memória (que começa em 0), e não às linhas do arquivo de texto de entrada (que começa em 1). No exemplo abaixo, a instrução JUMP M(8) não saltará para a instrução STOR M(2) – que apesar de estar na 8.ª linha, é o endereço de memória 7 – e sim para o endereço de memória 8 (9.ª linha).
+0  20
+1  15
+2  0
+3  0
+4  LOAD M(0)
+5  JUMP M(8)
+6  SUB M(1)
+7  STOR M(2)
 
-Algumas recomendações para o funcionamento:
+2. Não deixe espaços vazios na memória. Estes podem causar comportamentos imprevistos no funcionamento do programa. No exemplo baixo, os endereços 4 e 10 estão vazios, impossibilitando a leitura correta do arquivo de entrada.
 
-1 - A memória vai de 0 até N, no caso quando for dar um JUMP você tera que colocar uma posição de memória a menos por exemplo, pois as linhas de memória no txt começam em 1:
-
-0 - 20
-1 - 15
-2 - 0
-3 - 0
-4 - LOAD M(0)
-5 - SUB M(1)
-6 - JUMP M(8)
-7 - STOR M(2)
-8 - STOR M(3)
-
-2 - Não de enter's na memória (txt), isso pode acarretar algum erro no nosso código que não conseguimos tratar, por exemplo:
-
-0 - 20
-1 - 15
-2 - 0
-3 - 0
-4 - 
-5 - LOAD M(0)
-6 - SUB M(1)
-7 - JUMP M(8)
-8 - STOR M(2)
-9 - STOR M(3)
-10 - 
-
-Alguns programas para testar no nosso tradutor:
-
-1) Fatorial:
-
-6
-1
-0
-LOAD M(0)
-STOR M(2)
-LOAD M(0)
-SUB M(1)
-STOR M(0)
-LOAD MQ,M(0)
-LOAD M(0)
-SUB M(1)
-SUB M(1)
-JUMP +M(14)
-JUMP M(18)
-MUL M(2)
-LOAD MQ
-STOR M(2)
-JUMP M(5)
-LOAD M(2)
-
-2) Contador:
-
-1
-1
+0  20
+1 15
+2  0
+3  0
+4  
+5  LOAD M(0)
+6  SUB M(1)
+7  JUMP M(8)
+8  STOR M(2)
+9  STOR M(3)
 10
-LOAD M(0)
-ADD M(1)
-STOR M(0)
-SUB M(2)
-JUMP +M(9)
-JUMP M(3)
-LOAD M(0)
-
-3) Encontrar o maior número entre os 3 números:
-
-8
-10
-15
-0
-LOAD M(0)       
-SUB M(1)        
-JUMP +M(8)
-JUMP M(12) 
-LOAD M(0)
-SUB M(2)
-JUMP +M(16) 
-JUMP M(22) 
-LOAD M(1)
-SUB M(2) 
-JUMP +M(19)
-JUMP M(22) 
-LOAD M(0)
-STOR M(3)
-JUMP M(25)
-LOAD M(1)
-STOR M(3)
-JUMP M(25)
-LOAD M(2)
-STOR M(3)
-JUMP M(25)
-LOAD M(3)
