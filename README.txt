@@ -5,7 +5,7 @@ Embora reconheçamos que nosso nível de aprendizado impõe certas limitações 
 Agradecemos a compreensão.
 
 DO FUNCIONAMENTO
-Para executar o tradutor, enquanto estiver no diretório principal (Trabalho-Arquitetura-main), execute no terminal:
+Para utiilizar o tradutor: enquanto estiver no diretório principal (Trabalho-Arquitetura-main), execute no terminal:
 "python ias.py <arquivo de entrada> <endereço em que começam as instruções>", sem as aspas.
 Para ler, por exemplo, o programa de teste (teste.ias), execute:
 "python ias.py teste.ias 3", sem as aspas.
