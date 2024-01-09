@@ -14,7 +14,7 @@ AC = 0
 MQ = 0
 
 # VARIAVEIS AUXILIARES
-INIT_PC = 0  # Armazena o endereco inicial das instrucoes
+INIT_PC = 0  # Armazena o endereco inicial das instrucoes.
 
 # CICLO DA INSTRUCAO
 def busca():
@@ -25,20 +25,23 @@ def busca():
 def decodificacao():
     global MBR, IR, MAR, PC
 
-    if '(' in MBR and ')' in MBR:
-        opcode = MBR.split('(')[0]
+    if '(' in MBR and ')' in MBR: # Se tiver parênteses no MBR.
+        # Pega tudo que tiver antes do '(', e colocar no IR.
+        opcode = MBR.split('(')[0] 
         IR = opcode.strip()
         
+        # Pega tudo que estiver dentro do '(', ')', e coloca no MAR.
         endereco = int(MBR.split("(")[1].split(")")[0])
         MAR = endereco
     else:
+        # Caso contrário se não tiver parênteses, não tem endereço, logo é uma instrução sem endereço associado.
         IR = MBR.strip()
         MAR = "NONE" 
 
 def busca_dos_operandos():
     global MBR, MAR, MEMORIA
 
-    if isinstance(MAR, int):  # Verifica se MAR é um número inteiro
+    if isinstance(MAR, int):  # Verifica se MAR é um número inteiro.
         MBR = MEMORIA[MAR]
     else:
         print("Instrução sem endereço associado")
@@ -46,6 +49,7 @@ def busca_dos_operandos():
 def execucao():
     global IR, MAR, PC, AC, MEMORIA, MBR, MQ
 
+    # Printando registradores a cada interação de instrução
     print(f"IR: {IR}")
     print(f"AC: {AC}")
     print(f"MAR: {MAR}")
@@ -133,14 +137,14 @@ def inicia_PC(endereco):
     PC = endereco
     INIT_PC = endereco
 
-def print_memoria_dados(linha_inicio):
+def print_memoria_dados(linha_inicio): # Função para printar todos os dados da memória no txt
     global MEMORIA
 
     print("***** MEMORIA *****\n")
     for i, valor in enumerate(MEMORIA[:linha_inicio]):
         print(f"{i}\t{valor}")
 
-def print_instrucoes(instrucoes):
+def print_instrucoes(instrucoes): # Função para printar todas as instruções da memória no txt
     print("\n***** INSTRUCOES *****\n")
     for instrucao in instrucoes:
         print(instrucao)
@@ -156,3 +160,9 @@ processador()
 
 print_memoria_dados(linha_inicio)
 print_instrucoes(MEMORIA[linha_inicio:])
+
+print("\n======================\n")
+print("   MEMORIA COMPLETA")
+print("\n======================\n")
+
+print(MEMORIA, "\n")
