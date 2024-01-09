@@ -22,7 +22,7 @@ Algumas recomendações:
 6  SUB M(1)
 7  STOR M(2)
 
-2. Não deixe espaços vazios na memória. Estes podem causar comportamentos imprevistos no funcionamento do programa. No exemplo baixo, os endereços 4 e 10 estão vazios, impossibilitando a leitura correta do arquivo de entrada.
+2. Não deixe espaços vazios na memória. Estes podem causar comportamentos imprevistos no funcionamento do programa. No exemplo baixo, o endereço 4 está vazio, impossibilitando a leitura correta do arquivo de entrada.
 0  20
 1  15
 2  0
@@ -33,4 +33,3 @@ Algumas recomendações:
 7  JUMP M(8)
 8  STOR M(2)
 9  STOR M(3)
-10
