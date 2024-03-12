@@ -50,19 +50,19 @@ def execucao():
     global IR, MAR, PC, AC, MEMORIA, MBR, MQ
 
     # Printando registradores a cada interação de instrução
-    print(f"IR: {IR}")
-    print(f"AC: {AC}")
-    print(f"MAR: {MAR}")
-    print(f"PC depois do JUMP: {PC}\n")
+    # print(f"IR: {IR}")
+    # print(f"AC: {AC}")
+    # print(f"MAR: {MAR}")
+    # print(f"PC depois do JUMP: {PC}\n")
 
     if IR == "JUMP M":  # JUMP M(X)
         endereco = int(MAR)
-        PC = endereco - 1
+        PC = endereco
     elif IR == "JUMP +M": # JUMP +M(X)
         if int(AC) >= 0:  # Verifica se o AC é positivo
             endereco = int(MAR)
-            PC = endereco - 1
-    elif IR == "LOAD M": # LOAD M(X) 
+            PC = endereco
+    elif IR == "LOAD M": # LOAD M(X)
         AC = MBR
     elif IR == "LOAD |M": # LOAD |M(X)|
         MBR = int(MBR)
@@ -72,7 +72,7 @@ def execucao():
     elif IR == "LOAD MQ,M": # LOAD MQ, M(X)
         MQ = int(MBR)
     elif IR == "LOAD -M": # LOAD -M(X)
-        AC = -MBR
+        AC = -int(MBR)
     elif IR == "LOAD -|M": # LOAD -|M(X)|
         MBR = int(MBR)
         AC = -abs(MBR)
@@ -111,17 +111,25 @@ def execucao():
         MBR = AC
         MBR = int(MBR)
         MEMORIA[MAR] = MBR
+    elif IR == "STOR OP":  # STOR OP(X)
+        endereco = int(MAR)
+        instrucao_atual = MEMORIA[endereco]
+        operando_atual = int(instrucao_atual.split("(")[1].split(")")[0])
+        novo_operando = int(AC)
+        nova_instrucao = instrucao_atual.replace(str(operando_atual), str(novo_operando))
+        MEMORIA[endereco] = nova_instrucao
 
 # PROCESSADOR
 def processador():
     global PC
     while PC < len(MEMORIA):  # Executa enquanto houver instruções na memória
-        print(f"PC: {PC}")
         busca()
         decodificacao()
         busca_dos_operandos()
+        PC_antes = PC # Salva PC antes da execução
         execucao()
-        PC += 1
+        if PC == PC_antes: # Se for igual incrementa
+            PC += 1
 
 # FUNCOES AUXILIARES
 def carga_memoria(nome_arquivo):
