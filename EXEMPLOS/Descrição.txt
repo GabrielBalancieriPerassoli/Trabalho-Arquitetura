@@ -1,3 +1,8 @@
 Contador: soma 1 ao número do endereço 0 até que ele se iguale ao número do endereço 2;
 Fatorial: faz o fatorial do número do endereço 0 e armazena o resultado no endereço 2;
 Maior: compara os números dos endereços 0, 1 e 2; identifica o maior e armazena-o no endereço 3.
+MDC e MMC: acha o mdc e a partir do mdc com uma fórmula ele acha o mmc.
+Potência: calcula a potência de uma base elevado a algum número.
+Ordenação: faz a ordenação de 5 números na memória "simulando" como se fosse um vetor.
+
+TODOS OS ALGORITMOS ACIMA PARA SEREM RODADOS, TERÃO SER QUE COLOCADOS NO teste.ias, ABRINDO O TERMINAL E DIGITANDO python ias.py teste.ias <número da linha que terminal a parte dos dados>
