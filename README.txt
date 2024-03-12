@@ -1,3 +1,7 @@
+Nome: Gabriel Balancieri Perassoli RA: 135854 
+Nome: Gabriel Bertolini RA: 132766
+Nome: Matheus Dinon Leite RA: 132856
+
 O tradutor foi desenvolvido utilizando todos os recursos disponíveis ao nosso alcance.
 
 Embora reconheçamos que nosso nível de aprendizado impõe certas limitações ao projeto, empenhamo-nos ao máximo em testar nosso programa exaustivamente, em busca de torná-lo plenamente funcional – mantendo, é claro, os elementos presentes na arquitetura do computador IAS. 
